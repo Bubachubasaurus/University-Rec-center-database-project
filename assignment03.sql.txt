@@ -1,0 +1,222 @@
+Last login: Tue Sep 22 12:33:53 on ttys000
+%                                                                                                     judemarcano@eduroam-226-43-150 course-repo % docker compose up -d
+[+] up 3/4
+[+] up 3/4... Created                                                                             0.0s
+[+] up 4/4... Created                                                                             0.0s
+ ✔ Network... Created                                                                             0.0s
+ ✔ Contain... Started                                                                             0.2s ✔ Contain... Started                                                                             0.2s ! phpmyadmin The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested 0.0s
+judemarcano@eduroam-226-43-150 course-repo % docker exec -it mysql_db mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.4.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++------------------------------+
+| Database                     |
++------------------------------+
+| University_Recreation_Center |
+| information_schema           |
+| labs                         |
+| my_list                      |
+| mysql                        |
+| performance_schema           |
+| student_db                   |
+| sys                          |
++------------------------------+
+8 rows in set (0.01 sec)
+
+mysql> use university_recreation_center;
+ERROR 1049 (42000): Unknown database 'university_recreation_center'
+mysql> use Universiry_Recreation_Center
+ERROR 1049 (42000): Unknown database 'Universiry_Recreation_Center'
+mysql> use University_Recreation_Center
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++----------------------------------------+
+| Tables_in_University_Recreation_Center |
++----------------------------------------+
+| Employees                              |
+| Members                                |
++----------------------------------------+
+2 rows in set (0.01 sec)
+
+mysql> create table Member_Contacts;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table Member_Contacts 
+    -> id int not null auto_increment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id int not null auto_increment' at line 2
+mysql> create table Member_Contacts (
+    -> id INT NOT NULL AUTO_INCREMENT;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> create table Member_Contacts ( id INT NOT NULL AUTO_INCREMENT);
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> create table Member_Contacts ( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> alter table Member_Contacts add column phone_number VARCHAR(10);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Member_Contacts add column email VARCHAR(30);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Member_Contacts
+    -> ;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id           | int         | NO   | PRI | NULL    | auto_increment |
+| phone_number | varchar(10) | YES  |     | NULL    |                |
+| email        | varchar(30) | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table Memebers add column id int not null primary key auto_incrment first;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_incrment first' at line 1
+mysql> alter table Memebers add column id int not null primary key first auto_incrment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_incrment' at line 1
+mysql> alter table Memebers add column id int not null primary key first auto_increment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_increment' at line 1
+mysql> alter table Memebers add column id int not null primary key first;
+ERROR 1146 (42S02): Table 'University_Recreation_Center.Memebers' doesn't exist
+mysql> alter table Members add column id int not null primary key first;
+ERROR 1062 (23000): Duplicate entry '0' for key 'Members.PRIMARY'
+mysql> alter table Members add column id int not null auto_increment first;
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> alter table Members add column id int not null auto_increment primary key first;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Members;
++----+------------+------------+------------+
+| id | last_name  | first_name | birthday   |
++----+------------+------------+------------+
+|  1 | Swift      | Taylor     | 1989-12-13 |
+|  2 | Knowles    | Beyonce    | 1981-09-04 |
+|  3 | Dicaprio   | Leonardo   | 1974-11-11 |
+|  4 | Aniston    | Jennifer   | 1969-02-11 |
+|  5 | Pitt       | Brad       | 1963-12-18 |
+|  6 | Jolie      | Angelina   | 1975-06-04 |
+|  7 | Cruise     | Tom        | 1962-07-03 |
+|  8 | Johnson    | Dwayne     | 1972-05-02 |
+|  9 | Fenty      | Rihanna    | 1988-02-20 |
+| 10 | Bieber     | Justin     | 1994-03-01 |
+| 11 | Gomez      | Selena     | 1992-07-22 |
+| 12 | Grande     | Ariana     | 1993-06-26 |
+| 13 | Gaga       | Lady       | 1986-03-28 |
+| 14 | Downey     | Robert     | 1965-04-04 |
+| 15 | Hemsworth  | Chris      | 1983-08-11 |
+| 16 | Johansson  | Scarlett   | 1984-09-22 |
+| 17 | Smith      | Will       | 1968-09-25 |
+| 18 | Stone      | Emma       | 1988-11-06 |
+| 19 | Reynolds   | Ryan       | 1976-10-23 |
+| 20 | Coleman    | Zendaya    | 1996-09-01 |
+| 21 | Reeves     | Keanu      | 1964-09-02 |
+| 22 | Kardashian | Kim        | 1980-10-21 |
+| 23 | Perry      | Katy       | 1984-10-25 |
+| 24 | Freeman    | Morgan     | 1937-06-01 |
+| 25 | Jackson    | Samuel     | 1948-12-21 |
++----+------------+------------+------------+
+25 rows in set (0.00 sec)
+
+mysql> insert into Member_Contacts
+    -> (phone_number, email)
+    -> values
+    -> ('111-111-1111', 'taylorswift@gmail.com');
+ERROR 1406 (22001): Data too long for column 'phone_number' at row 1
+mysql> alter table Member_Contacts modify column phone_number VARCHAR(12);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into Member_Contacts (phone_number, email) values ('111-111-1111', 'taylorswift@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Member_Contacts;
++----+--------------+-----------------------+
+| id | phone_number | email                 |
++----+--------------+-----------------------+
+|  1 | 111-111-1111 | taylorswift@gmail.com |
++----+--------------+-----------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into Member_Contacts (phone_number, email) values ('111-111-1112', 'beyonceknowles@gmail
+.com'), ('111-111-1113', 'leonardodicaprio@gmail.com'), ('111-111-1114', 'jenniferaniston@gmail.com') 
+ ('111-111-1115', 'bradpitt@gmail.com'), ('111-111-1116', 'angelinajolie@gmail.com'), ('111-111-1117' 
+ 'tomcruise@gmail.com'), ('111-111-1118', 'dwyanejohnson@gmail.com'), ('111-111-1119', 'rihannafenty@gmail.com'), ('111-111-1110', 'justinbieber@gmail.com'), ('111-111-1121', 'selenagomez@gmail.com'), ('111-111-1122', 'arianagrande@gmail.com'), ('111-111-1123', 'ladygaga@gmail.com'), ('111-111-1124', 'robertdowney@gmail.com'), ('111-111-1125', 'chrishemsworth@gmail.com'), ('111-111-1126', 'scarlettjohanson@gmail.com'), ('111-111-1127', 'willsmith@gmail.com'), ('111-111-1128', 'emmastone@gmail.com'), ('11 -111-1129', 'ryanreynolds@gmail.com'), ('111-111-1120', 'zendayacoleman@gmail.com'), ('111-111-1131',
+'keanureeves@gmail.com'), ('111-111-1132', 'kimkardashian@gmail.com'), ('111-111-1133', 'katyperry@gm 
+il.com'), ('111-111-1134', 'morganfreeman@gmail.com'), ('111-111-1135', 'samueljackson@gmail.com');
+Query OK, 24 rows affected (0.00 sec)
+Records: 24  Duplicates: 0  Warnings: 0
+
+mysql> select * from Member_Contacts;
++----+--------------+----------------------------+
+| id | phone_number | email                      |
++----+--------------+----------------------------+
+|  1 | 111-111-1111 | taylorswift@gmail.com      |
+|  2 | 111-111-1112 | beyonceknowles@gmail.com   |
+|  3 | 111-111-1113 | leonardodicaprio@gmail.com |
+|  4 | 111-111-1114 | jenniferaniston@gmail.com  |
+|  5 | 111-111-1115 | bradpitt@gmail.com         |
+|  6 | 111-111-1116 | angelinajolie@gmail.com    |
+|  7 | 111-111-1117 | tomcruise@gmail.com        |
+|  8 | 111-111-1118 | dwyanejohnson@gmail.com    |
+|  9 | 111-111-1119 | rihannafenty@gmail.com     |
+| 10 | 111-111-1110 | justinbieber@gmail.com     |
+| 11 | 111-111-1121 | selenagomez@gmail.com      |
+| 12 | 111-111-1122 | arianagrande@gmail.com     |
+| 13 | 111-111-1123 | ladygaga@gmail.com         |
+| 14 | 111-111-1124 | robertdowney@gmail.com     |
+| 15 | 111-111-1125 | chrishemsworth@gmail.com   |
+| 16 | 111-111-1126 | scarlettjohanson@gmail.com |
+| 17 | 111-111-1127 | willsmith@gmail.com        |
+| 18 | 111-111-1128 | emmastone@gmail.com        |
+| 19 | 111-111-1129 | ryanreynolds@gmail.com     |
+| 20 | 111-111-1120 | zendayacoleman@gmail.com   |
+| 21 | 111-111-1131 | keanureeves@gmail.com      |
+| 22 | 111-111-1132 | kimkardashian@gmail.com    |
+| 23 | 111-111-1133 | katyperry@gmail.com        |
+| 24 | 111-111-1134 | morganfreeman@gmail.com    |
+| 25 | 111-111-1135 | samueljackson@gmail.com    |
++----+--------------+----------------------------+
+25 rows in set (0.01 sec)
+
+mysql> show tables;
++----------------------------------------+
+| Tables_in_University_Recreation_Center |
++----------------------------------------+
+| Employees                              |
+| Member_Contacts                        |
+| Members                                |
++----------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from Employees
+    -> ;
++------------+-----------+------------+---------+-----------------+
+| first_name | last_name | hire_date  | role    | employee_number |
++------------+-----------+------------+---------+-----------------+
+| Jonathan   | Benton    | 2026-09-14 | Manager |               1 |
+| Nikita     | Tielushko | 2026-09-14 | Manager |               2 |
+| Seth       | Lew       | 2026-09-14 | Manager |               3 |
+| Connor     | Gaby      | 2026-09-14 | Staff   |               4 |
+| Noah       | Boat      | 2026-09-14 | Trainer |               5 |
+| Madison    | Rhea      | 2026-09-14 | Staff   |               6 |
+| Marley     | Espisito  | 2026-09-14 | Trainer |               7 |
+| Ivan       | Chan      | 2026-09-14 | Trainer |               8 |
+| Jackson    | Edwards   | 2026-09-14 | Staff   |               9 |
+| Gerald     | Derosa    | 2026-09-14 | Staff   |              10 |
++------------+-----------+------------+---------+-----------------+
+10 rows in set (0.01 sec)
